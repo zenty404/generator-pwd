@@ -1,3 +1,4 @@
-from password_generator.generator_window import *
+from password_generator import generator_window
 
-app()
+generator_window.app()
+
