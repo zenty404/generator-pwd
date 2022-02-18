@@ -4,6 +4,7 @@ import webbrowser
 from random import randint, choice
 import string
 from tkinter import *
+import os
 
 def open_my_channel():
     webbrowser.open_new("https://www.twitch.tv/art_hur421")
@@ -24,7 +25,14 @@ def app():
     window.geometry("720x480")
     window.minsize(720, 480)
     window.maxsize(720, 480)
-    #window.iconbitmap("logo_A.ico")
+    
+    try:
+        # macos and windows work with .ico files
+        window.tk.call('wm', 'iconphoto', window._w, PhotoImage(file=get_image("logo_A.ico")))
+    except TclError: 
+        # linux prefers .gif files
+        window.tk.call('wm', 'iconphoto', window._w, PhotoImage(file=get_image("logo_A.png")))
+
     window.config(background='#4065A4')
 
     # crée la frame princip
@@ -33,7 +41,7 @@ def app():
     # création d'image
     width = 300
     height = 300
-    image = PhotoImage(file='cyber-security1.png').zoom(35).subsample(32)
+    image = PhotoImage(file=get_image('cyber-security1.png')).zoom(35).subsample(32)
     canvas = Canvas(frame, width=width, height=height, bg='#4065A4', bd=0, highlightthickness=0)
     canvas.create_image(width/2, height/2, image=image)
     canvas.grid(row=0, column=0, sticky=W)
@@ -77,4 +85,10 @@ def app():
     # afficher la fenetre
     window.mainloop()
 
-app()
+def get_current_dir():
+    return os.path.dirname(os.path.realpath(__file__))
+
+def get_image(image_file_name):
+    path = f"{get_current_dir()}{os.sep}{image_file_name}"
+    return path
+
