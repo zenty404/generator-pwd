@@ -9,14 +9,16 @@ import os
 def open_my_channel():
     webbrowser.open_new("https://www.twitch.tv/art_hur421")
 
-def generate_password():
-    password_min = 10
-    password_max = 20
-    all_chars = string.ascii_letters + string.punctuation + string.digits
+def generate_password(password_field):
+    def run():
+        password_min = 10
+        password_max = 20
+        all_chars = string.ascii_letters + string.punctuation + string.digits
 
-    password = "".join(choice(all_chars) for x in range (randint(password_min, password_max)))
-    password_entry.delete(0, END)
-    password_entry.insert(0, password)
+        password = "".join(choice(all_chars) for x in range (randint(password_min, password_max)))
+        password_field.delete(0, END)
+        password_field.insert(0, password)
+    return run
 
 def app():
     # crée la fenetre
@@ -58,7 +60,7 @@ def app():
     password_entry.pack()
 
     # creer un bouton
-    generate_password_button = Button(right_frame, text="Générer", font=("Helvetica", 20), fg='black', command=generate_password)
+    generate_password_button = Button(right_frame, text="Générer", font=("Helvetica", 20), fg='black', command=generate_password(password_entry))
     generate_password_button.pack(fill=X)
 
     # on place la sous boite a droite de la frame principale
@@ -71,7 +73,7 @@ def app():
     menu_bar = Menu(window)
     # creer un premier menu
     file_menu = Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label="Nouveau", command=generate_password)
+    file_menu.add_command(label="Nouveau", command=generate_password(password_entry))
     file_menu.add_command(label="Quitter", command=window.quit)
     menu_bar.add_cascade(label="Fichier", menu=file_menu)
 
